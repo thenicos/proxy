@@ -12,6 +12,7 @@ def all_routes(text):
     if "Bearer" not in data:
         abort(404)
     TOKEN = data[data.index("Bearer")+1]
+    return str(os.environ.get('BEARER')==TOKEN)
     if (os.environ.get('BEARER')==TOKEN):
         hed = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
         return str(requests.get("https://api.rentman.net/"+text, headers=hed).json())
