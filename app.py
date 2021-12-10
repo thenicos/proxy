@@ -16,7 +16,7 @@ LINK = os.environ.get('rentmanlink')
 basic_auth = BasicAuth(app)
 
 @app.route('/')
-@basic_auth.required
+#@basic_auth.required
 def secret_view():
     return "funziona"
 
