@@ -9,7 +9,7 @@ CORS(app)
 @app.route('/')
 #@basic_auth.required
 def secret_view():
-    return "funziona"
+    return flask.request.headers
 
 '''
 @app.route('/callrentman')
