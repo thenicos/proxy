@@ -1,25 +1,15 @@
 from flask import Flask, render_template, request
-from flask_basicauth import BasicAuth
 import os
 import requests
 
 app = Flask(__name__)
-#mettere questa variabile a True per attivare un'autenticazione con nome utente e password
-app.config['BASIC_AUTH_FORCE'] = False
-app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_AUTH_USERNAME')
-app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_AUTH_PASSWORD')
-#----------------------------------------------------------------------------------------#
-
-TOKEN = os.environ.get('rentmanapitoken')
-LINK = os.environ.get('rentmanlink')
-
-basic_auth = BasicAuth(app)
 
 @app.route('/')
 #@basic_auth.required
 def secret_view():
     return "funziona"
 
+'''
 @app.route('/callrentman')
 @basic_auth.required
 def call_to_rentman():
@@ -45,7 +35,7 @@ def isAtsMode():
     if (os.environ.get('CUSTOM_ATS') == None):
         return "False"
     return "True"
-
+'''
 
 if __name__ == "__main__":
     app.run()
