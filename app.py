@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
 import os
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 #@basic_auth.required
