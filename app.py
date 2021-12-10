@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 from flask_cors import CORS
 import os
 import requests
@@ -6,38 +6,17 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/')
-#@basic_auth.required
-def secret_view():
-    return flask.request.headers
+@app.route('/<path:text>', methods=['GET'])
+def all_routes(text):
+    data = str(request.headers).split()
+    if "Bearer" not in data:
+        abort(404)
+    TOKEN = data[data.index("Bearer")+1]
+    if (os.environ.get('BEARER')==TOKEN):
+        hed = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
+        return str(requests.get("https://api.rentman.net/"+text, headers=hed).json())
 
-'''
-@app.route('/callrentman')
-@basic_auth.required
-def call_to_rentman():
-    function = request.args.get('rentmanfunction')
-    if function==None:
-        return "null"
-
-    payload = request.args.to_dict(flat=True)
-    del payload['rentmanfunction']
-
-    hed = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
-    return requests.get("https://api.rentman.net/"+function, params=payload, headers=hed).json()
-
-@app.route('/getrentmanlink')
-@basic_auth.required
-def link_to_rentman():
-    return LINK
-
-#se viene trovata una variabile d'ambiente chiamata CUSTOM_ATS, viene attivata la modalità custom, basata su tag che usiamo solo in ats e altre customizzazioni specifiche di rentman
-@app.route('/atsmode')
-@basic_auth.required
-def isAtsMode():
-    if (os.environ.get('CUSTOM_ATS') == None):
-        return "False"
-    return "True"
-'''
+    abort(404)
 
 if __name__ == "__main__":
     app.run()
