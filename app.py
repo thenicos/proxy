@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, abort
 from flask_cors import CORS
 import os
 import requests
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -14,7 +15,8 @@ def all_routes(text):
     TOKEN = data[data.index("Bearer")+1]
     if (os.environ.get('BEARER')==TOKEN):
         hed = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
-        return str(requests.get("https://api.rentman.net/"+text, headers=hed).json())
+        response =requests.get("https://api.rentman.net/"+text, headers=hed).json()    
+        return str(json.dumps(response))
 
     abort(404)
 
