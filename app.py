@@ -15,7 +15,8 @@ def all_routes(text):
     TOKEN = data[data.index("Bearer")+1]
     if (os.environ.get('BEARER')==TOKEN):
         hed = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
-        response =requests.get("https://api.rentman.net/"+text, headers=hed).json()    
+        payload = request.args.to_dict(flat=True)
+        response =requests.get("https://api.rentman.net/"+text, params=payload, headers=hed).json()
         return str(json.dumps(response))
 
     abort(404)
